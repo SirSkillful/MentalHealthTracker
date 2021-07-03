@@ -88,14 +88,12 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
      * @return Boolean that indicates if the insert was successful
      */
     private fun addRating(date: String, rating: Int, note: String): Boolean{
-        val db = this.writableDatabase
         val values = ContentValues().apply{
             put(RATINGS_DATE_COLUMN, date)
             put(RATINGS_RATING_COLUMN, rating)
             put(RATINGS_NOTE_COLUMN, note)
         }
         val ret = db?.insert(RATINGS_TABLE_NAME, null, values)
-        //db.close()
         return ret?.toInt() != -1
     }
 
@@ -103,7 +101,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
      * Update a rating in the database for a given date
      */
     private fun updateRating(date: String, rating: Int, note: String): Boolean{
-        val db = this.writableDatabase
         // New rating and note
         val values = ContentValues().apply {
             put(RATINGS_RATING_COLUMN, rating)
@@ -115,7 +112,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         // Update and get the count of affected rows
         val count = db.update(RATINGS_TABLE_NAME, values, selection, selectionArgs)
 
-        db.close()
         return count > 0
     }
 
@@ -123,7 +119,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
      * Get the rating for a given date
      */
      fun getRating(date: String): Rating?{
-        val db = this.readableDatabase
         //Choose what columns are used
         val projection = arrayOf(RATINGS_RATING_COLUMN, RATINGS_NOTE_COLUMN)
         //Prepare the query
@@ -150,7 +145,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
             }
         }
         cursor.close()
-        db.close()
         return rating
     }
 
@@ -158,7 +152,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
      * Update the entry in the database where the rating is the one given
      */
     fun updateSetting(text: String, rating: Int, color: String): Boolean{
-        val db = this.writableDatabase
         // New rating and note
         val values = ContentValues().apply {
             put(SETTINGS_TEXT_COLUMN, text)
@@ -170,20 +163,16 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         // Update and get the count of affected rows
         val count = db.update(SETTINGS_TABLE_NAME, values, selection, selectionArgs)
 
-        db.close()
         return count > 0
     }
 
     fun addSetting(text: String, rating: Int, color: String): Boolean{
-        //val db = this.writableDatabase
         val values = ContentValues().apply{
             put(SETTINGS_TEXT_COLUMN, text)
             put(SETTINGS_RATING_COLUMN, rating)
             put(SETTINGS_COLOR_COLUMN, color)
         }
         val ret = db?.insert(SETTINGS_TABLE_NAME, null, values)
-        Log.d("DEBUGGING", "The return value for the statement is $ret")
-        //db.close()
         return ret?.toInt() != -1
     }
 
@@ -191,7 +180,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
      * Return a list of all settings in the database
      */
     fun getSettings(): List<String>{
-        //val db = this.readableDatabase
         val projection = arrayOf(SETTINGS_TEXT_COLUMN, SETTINGS_RATING_COLUMN)
         val cursor = db.query(
             SETTINGS_TABLE_NAME,
@@ -212,7 +200,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
             }
         }
         cursor.close()
-        //db.close()
         return results
     }
 
@@ -220,8 +207,29 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
      * Get the text string for a rating if the rating is loaded again.
      * This can be used to set the currently shown spinner value
      */
-    fun getSetting(rating: Int): String{
-        return "Hello"
+    fun getSetting(rating: Int): Setting?{
+        val projection = arrayOf(SETTINGS_TEXT_COLUMN, SETTINGS_RATING_COLUMN, SETTINGS_COLOR_COLUMN)
+        val selection = "$SETTINGS_RATING_COLUMN = ?"
+        val selectionArgs = arrayOf(rating.toString())
+        val cursor = db.query(
+            SETTINGS_TABLE_NAME,
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+        var setting:Setting? = null
+        with(cursor) {
+            if (moveToNext()) {
+                val text = getString(getColumnIndexOrThrow(SETTINGS_TEXT_COLUMN))
+                val rating = getInt(getColumnIndexOrThrow(SETTINGS_RATING_COLUMN))
+                val color = getString(getColumnIndexOrThrow(SETTINGS_COLOR_COLUMN))
+                setting = Setting(text, rating, color)
+            }
+        }
+        return setting
     }
 
     fun resetHistory(){

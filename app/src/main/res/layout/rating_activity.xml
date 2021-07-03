@@ -42,7 +42,7 @@
                 android:id="@+id/date_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date:"
+                android:text="Date: "
                 android:textSize="18sp" />
 
             <TextView
@@ -72,7 +72,7 @@
             app:barrierDirection="left" />
 
         <Spinner
-            android:id="@+id/rating_spinner"
+            android:id="@+id/rating_rating_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"

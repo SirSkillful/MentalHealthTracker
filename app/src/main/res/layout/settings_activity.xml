@@ -82,7 +82,7 @@
             android:orientation="vertical">
 
             <Spinner
-                android:id="@+id/rating_spinner"
+                android:id="@+id/setting_rating_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/white_round_corner_bg"

@@ -29,13 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         val settingsButton = findViewById<Button>(R.id.settings_button)
         settingsButton.setOnClickListener {
-            val text = dbHelper.getSettings()[0]
-            val duration = Toast.LENGTH_SHORT
-
-            val toast = Toast.makeText(applicationContext, text, duration)
-            toast.show()
-            //val intent = Intent(this, SettingsActivity::class.java)
-            //startActivity(intent)
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
         }
 
         val exitButton = findViewById<Button>(R.id.exit_button)
