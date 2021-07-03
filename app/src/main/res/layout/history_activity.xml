@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#83D8CF"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="78dp"
+        android:layout_height="37dp"
+        android:backgroundTint="#EA6077"
+        android:text="Back"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-2dp" />
+
+    <TextView
+        android:id="@+id/history_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View your history"
+        android:textAlignment="center"
+        android:textColor="#3C3C3C"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="95dp" />
+
+    <CalendarView
+        android:id="@+id/calendar_view"
+        android:layout_width="325dp"
+        android:layout_height="325dp"
+        android:background="@drawable/white_round_corner_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
