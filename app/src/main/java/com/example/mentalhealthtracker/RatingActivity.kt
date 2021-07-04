@@ -27,6 +27,7 @@ class RatingActivity : AppCompatActivity() {
             val rating = findViewById<Spinner>(R.id.rating_rating_spinner).selectedItem.toString().split("- ").last().toInt()
             dbHelper.saveRating(date as String, rating, note)
             //Go back to the main activity
+            respondToRating(rating)
             super.onBackPressed()
         }
 
@@ -68,6 +69,25 @@ class RatingActivity : AppCompatActivity() {
             note.setText(rating.getNoteString())
         } else {
             return
+        }
+    }
+
+    fun showToast(text: String, duration: Int){
+        val toast = Toast.makeText(applicationContext, text, duration)
+        toast.show()
+    }
+
+    fun respondToRating(rating: Int){
+        if (rating == 1){
+            showToast("Sorry your day hasn't been great. Tomorrow will surely be better.", Toast.LENGTH_LONG)
+        } else if (rating == 2) {
+            showToast("We all have some bad days but at least this one is over. Let's look forward to greater days!", Toast.LENGTH_LONG)
+        } else if (rating == 3) {
+            showToast("Just a normal day, that's cool. If it weren't for them we could not tell the amazing ones apart!", Toast.LENGTH_LONG)
+        } else if (rating == 4) {
+            showToast("Another good day, you deserve it!", Toast.LENGTH_LONG)
+        } else {
+            showToast("Great to hear you had a wonderful day! Let me know all about it :)", Toast.LENGTH_LONG)
         }
     }
 

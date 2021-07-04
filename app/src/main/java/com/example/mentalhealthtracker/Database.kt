@@ -268,9 +268,23 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
     }
 
     fun resetHistory(){
-        val db = this.writableDatabase
         db?.execSQL(DELETE_RATINGS_TABLE)
         db?.execSQL(CREATE_RATINGS_TABLE)
+    }
+
+    fun resetSettings(): Boolean{
+        db?.execSQL(DELETE_SETTINGS_TABLE)
+        db?.execSQL(CREATE_SETTINGS_TABLE)
+        populateSettings()
+        // Delete all rating entries with wrong rating values
+        val selection = "$RATINGS_RATING_COLUMN LIKE ?"
+        val selectionArgs = arrayOf<String>("1", "2", "3", "4", "5")
+        var deletedRows = 0
+        for (item in selectionArgs){
+            deletedRows += db.delete(RATINGS_TABLE_NAME, selection, arrayOf(item))
+        }
+        //Return if the operation is successful
+        return deletedRows > 0
     }
 
     companion object {

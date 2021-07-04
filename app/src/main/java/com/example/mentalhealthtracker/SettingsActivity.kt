@@ -1,10 +1,18 @@
 package com.example.mentalhealthtracker
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import com.skydoves.colorpickerview.AlphaTileView
+import com.skydoves.colorpickerview.ColorEnvelope
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.flag.BubbleFlag
+import com.skydoves.colorpickerview.flag.FlagMode
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
+
 
 class SettingsActivity : AppCompatActivity(){
 
@@ -79,6 +87,43 @@ class SettingsActivity : AppCompatActivity(){
             dbHelper.resetHistory()
             showToast("All entries have been reset", Toast.LENGTH_LONG)
         }
+
+        val pickerButton = findViewById<Button>(R.id.color_picker_button)
+        pickerButton.setOnClickListener {
+            val builder = ColorPickerDialog.Builder(this, R.style.CustomAlertDialog)
+                .setTitle("Pick your color")
+                .setPreferenceName("MyColorPickerDialog")
+                .setPositiveButton("Confirm",
+                    ColorEnvelopeListener { envelope, fromUser -> setColor(envelope) })
+                .setNegativeButton("Cancel"
+                ) { dialogInterface, i -> dialogInterface.dismiss() }
+                .attachAlphaSlideBar(true) // the default value is true.
+                .attachBrightnessSlideBar(true) // the default value is true.
+                .setBottomSpace(12) // set a bottom space between the last slidebar and buttons.
+
+            builder.colorPickerView.setFlagView(BubbleFlag(this))
+            builder.colorPickerView.setBackgroundColor(Color.parseColor("#83D8CF"))
+            builder.show()
+        }
+
+        val resetSettingsButton = findViewById<Button>(R.id.reset_settings_button)
+        resetSettingsButton.setOnClickListener{
+            val response = dbHelper.resetSettings()
+            showToast("The settings have been reset", Toast.LENGTH_LONG)
+            if (response){
+                showToast("History entries have been affected as well", Toast.LENGTH_LONG)
+            }
+            updateSpinnerEntries()
+            populateEntries()
+        }
+    }
+
+    private fun setColor(envelope: ColorEnvelope) {
+        val colorText = findViewById<EditText>(R.id.color_input)
+        colorText.setText("#${envelope.getHexCode()}")
+        //Update color of the color button
+        val colorPickerButton = findViewById<Button>(R.id.color_picker_button)
+        colorPickerButton.setBackgroundColor(Color.parseColor("#${envelope.getHexCode()}"))
     }
 
     fun showToast(text: String, duration: Int){
@@ -121,6 +166,9 @@ class SettingsActivity : AppCompatActivity(){
             ratingInput.setText(setting.getRatingInt().toString())
             val colorInput = findViewById<EditText>(R.id.color_input)
             colorInput.setText(setting.getColorString())
+            //Change the color of the color picker button
+            val colorPickerButton = findViewById<Button>(R.id.color_picker_button)
+            colorPickerButton.setBackgroundColor(Color.parseColor(setting.getColorString()))
             Log.d("SPINNER", "The setting values are ${setting.getTextString()}, ${setting.getRatingInt()} and ${setting.getColorString()}")
         } else {
             Log.d("SPINNER", "Guess the database had a problem")

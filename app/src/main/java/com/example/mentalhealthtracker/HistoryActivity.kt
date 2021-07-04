@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import sun.bob.mcalendarview.MCalendarView
 import sun.bob.mcalendarview.MarkStyle
 import sun.bob.mcalendarview.listeners.OnDateClickListener
+import sun.bob.mcalendarview.listeners.OnMonthChangeListener
 import sun.bob.mcalendarview.vo.DateData
+import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,6 +47,14 @@ class HistoryActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
+        calendarView.setOnMonthChangeListener(object : OnMonthChangeListener() {
+            override fun onMonthChange(year: Int, month: Int) {
+                val dateText = findViewById<TextView>(R.id.calendar_month_text)
+                val monthString = DateFormatSymbols().getMonths()[month-1]
+                dateText.setText("$monthString - $year")
+            }
+        })
         /*
         calendarView.setOnDateChangeListener{ view: CalendarView, year: Int, month: Int, day: Int ->
             val calendar = Calendar.getInstance()
@@ -60,6 +72,10 @@ class HistoryActivity : AppCompatActivity() {
     override fun onResume(){
         super.onResume()
         markDates()
+        val sdf = SimpleDateFormat("MMMM - yyyy")
+        val currentDate = sdf.format(Date())
+        val dateText = findViewById<TextView>(R.id.calendar_month_text)
+        dateText.setText(currentDate)
     }
 
     fun markDates(){

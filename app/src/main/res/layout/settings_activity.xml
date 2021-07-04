@@ -15,15 +15,15 @@
         android:text="Back"
         android:textAlignment="center"
         android:textSize="12sp"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="1dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="50dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -95,8 +95,8 @@
 
                 <TextView
                     android:id="@+id/text_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Text:"
                     android:textColor="#3C3C3C"
@@ -104,7 +104,7 @@
 
                 <EditText
                     android:id="@+id/text_input"
-                    android:layout_width="wrap_content"
+                    android:layout_width="219dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/white_round_corner_bg"
@@ -121,7 +121,7 @@
 
                 <TextView
                     android:id="@+id/rating_label"
-                    android:layout_width="wrap_content"
+                    android:layout_width="4dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Rating:"
@@ -150,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Color:"
+                    android:text="Color: "
                     android:textColor="#3C3C3C"
                     android:textSize="18dp" />
 
@@ -164,6 +164,15 @@
                     android:inputType="textPersonName"
                     android:textColor="#3C3C3C"
                     android:textSize="16dp" />
+
+                <Button
+                    android:id="@+id/color_picker_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Pick"
+                    android:textColor="#3C3C3C" />
 
             </LinearLayout>
 
@@ -214,6 +223,21 @@
                 android:text="Other:"
                 android:textColor="#3C3C3C"
                 android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/reset_settings_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#EA6077"
+                android:text="Reset settings"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/setting_reset_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Note: All rating with new rating values will be deleted as well!"
+                android:textColor="#3C3C3C" />
 
             <Button
                 android:id="@+id/delete_button"
