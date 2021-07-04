@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.*
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         val rateButton = findViewById<Button>(R.id.rate_button)
         rateButton.setOnClickListener {
             val intent = Intent(this, RatingActivity::class.java)
+            val sdf = SimpleDateFormat("dd.MM.yyyy")
+            val currentDate = sdf.format(Date())
+            intent.putExtra("date", currentDate)
             startActivity(intent)
         }
 

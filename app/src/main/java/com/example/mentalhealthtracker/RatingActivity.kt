@@ -19,7 +19,6 @@ class RatingActivity : AppCompatActivity() {
             super.onBackPressed()
         }
 
-
         val confirmButton = findViewById<Button>(R.id.rating_confirm_button)
         confirmButton.setOnClickListener {
             //Upload information entered to the database
@@ -41,8 +40,7 @@ class RatingActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         //Set the date label
-        val sdf = SimpleDateFormat("dd.MM.yyyy")
-        val currentDate = sdf.format(Date())
+        val currentDate = intent.getStringExtra("date")
         val dateText = findViewById<TextView>(R.id.date_text)
         dateText.text = currentDate
         //Load the rating options from the database
@@ -73,7 +71,5 @@ class RatingActivity : AppCompatActivity() {
         }
     }
 
-    //TODO Create a function to get the data from the database for a specific date
-
-    //TODO Create a function to push data to the database
+    //TODO On click of the date the history should be opened (maybe?)
 }

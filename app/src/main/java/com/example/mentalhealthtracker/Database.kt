@@ -58,10 +58,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
     private fun populateSettings(){
         val texts = arrayOf<String>("Awful", "Meh", "Neutral","Good", "Amazing")
-        val colors = arrayOf<String>("d10000", "ff6a00", "ffc400", "d4ff00", "04d600")
+        val colors = arrayOf<String>("#d10000", "#ff6a00", "#ffc400", "#d4ff00", "#04d600")
         val ratings = arrayOf<Int>(1,2,3,4,5)
         for (i in texts.indices){
-            val result = addSetting(texts[i], ratings[i], colors[i])
+            addSetting(texts[i], ratings[i], colors[i])
             Log.d("CREATION", "I have tried to add text no $i")
         }
     }
@@ -148,6 +148,25 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         return rating
     }
 
+    fun getAllRatings(): List<Date>{
+        val query = "SELECT $RATINGS_DATE_COLUMN, $SETTINGS_COLOR_COLUMN FROM $RATINGS_TABLE_NAME JOIN " +
+                "$SETTINGS_TABLE_NAME USING($SETTINGS_RATING_COLUMN)"
+        val cursor = db.rawQuery(query, null)
+        val dates = mutableListOf<Date>()
+        with(cursor){
+            while(moveToNext()){
+                val date = getString(getColumnIndexOrThrow(RATINGS_DATE_COLUMN))
+                val dateParts = date.split('.')
+                val day = dateParts[0].toInt()
+                val month = dateParts[1].toInt()
+                val year = dateParts[2].toInt()
+                val color = getString(getColumnIndexOrThrow(SETTINGS_COLOR_COLUMN))
+                dates.add(Date(year, month, day, color))
+            }
+        }
+        return dates
+    }
+
     /**
      * Update the entry in the database where the rating is the one given
      */
@@ -230,6 +249,22 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
             }
         }
         return setting
+    }
+
+    /**
+     * Delete a setting and all
+     */
+    fun deleteSetting(rating: Int): Boolean{
+        //Delete the setting
+        val selection = "$SETTINGS_RATING_COLUMN LIKE ?"
+        val selectionArgs = arrayOf(rating.toString())
+        val deletedRows = db.delete(SETTINGS_TABLE_NAME, selection, selectionArgs)
+        //Delete all entries where the old rating was used
+        val ratingSelection = "$RATINGS_RATING_COLUMN LIKE ?"
+        val ratingSelectionArgs = arrayOf(rating.toString())
+        db.delete(RATINGS_TABLE_NAME, ratingSelection, ratingSelectionArgs)
+        //Return if the operation is successful
+        return deletedRows > 0
     }
 
     fun resetHistory(){

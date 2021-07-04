@@ -107,10 +107,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/white_round_corner_bg"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:background="@drawable/white_round_corner_bg"
-                    android:text="Good"
                     android:textSize="16dp" />
 
             </LinearLayout>
@@ -130,14 +129,13 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/rating_input"
+                    android:id="@+id/rating_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/white_round_corner_bg"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="7"
+                    android:inputType="number"
                     android:textColor="#3C3C3C"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -161,10 +159,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/white_round_corner_bg"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:background="@drawable/white_round_corner_bg"
-                    android:text="FFF"
                     android:textColor="#3C3C3C"
                     android:textSize="16dp" />
 
@@ -176,12 +173,12 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/abort_button"
+                    android:id="@+id/delete_setting_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:backgroundTint="#EA6077"
-                    android:text="Abort"
+                    android:text="Delete"
                     android:textColor="#B6001A" />
 
                 <Space
@@ -198,6 +195,13 @@
                     android:text="Apply"
                     android:textColor="#00B60D" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Note: If a rating is deleted all history entries that contain it are deleted as well"
+                android:textColor="#3C3C3C" />
 
             <Space
                 android:layout_width="match_parent"
