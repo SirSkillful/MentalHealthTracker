@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.skydoves.colorpickerview.AlphaTileView
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.colorpickerview.ColorPickerDialog
@@ -16,7 +17,7 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class SettingsActivity : AppCompatActivity(){
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
 
@@ -44,29 +45,42 @@ class SettingsActivity : AppCompatActivity(){
             val text = findViewById<EditText>(R.id.text_input).text.toString()
             val rating = findViewById<EditText>(R.id.rating_number).text.toString().toInt()
             val color = findViewById<EditText>(R.id.color_input).text.toString()
-            val success = dbHelper.updateSetting(text, rating, color)
-            val lastPosition = updateSpinnerEntries()
+            // Try setting the color of the button. If it's not possible the color is invalid and the DB will not be updated
+            val validColor =             try{
+                val colorPickerButton = findViewById<Button>(R.id.color_picker_button)
+                colorPickerButton.setBackgroundColor(Color.parseColor(color))
+            } catch (e: java.lang.IllegalArgumentException){
+                showToast("Please enter a valid color before updating", Toast.LENGTH_SHORT)
+                -1
+            }
 
             val createBox = findViewById<CheckBox>(R.id.create_checkbox)
-            // Create a new setting
-            if(createBox.isChecked){
-                val response = dbHelper.addSetting(text, rating, color)
-                if (response){
-                    val lastPosition = updateSpinnerEntries()
+            if (validColor != -1){
+
+                val success = dbHelper.updateSetting(text, rating, color)
+                val lastPosition = updateSpinnerEntries()
+
+                // Create a new setting
+                if(createBox.isChecked){
+                    val response = dbHelper.addSetting(text, rating, color)
+                    if (response){
+                        val lastPosition = updateSpinnerEntries()
+                        spinner.setSelection(lastPosition)
+                        showToast("Your rating has been created successfully", Toast.LENGTH_LONG)
+                    } else {
+                        showToast("No rating could be created, please check that the rating is a number and not a duplicate", Toast.LENGTH_LONG)
+                    }
+                } else {
+                    // Update an existing rating
                     spinner.setSelection(lastPosition)
-                    showToast("Your rating has been created successfully", Toast.LENGTH_LONG)
-                } else {
-                    showToast("No rating could be created, please check that the rating is a number and not a duplicate", Toast.LENGTH_LONG)
-                }
-            } else {
-                // Update an existing rating
-                spinner.setSelection(lastPosition)
-                if (success) {
-                    showToast("Your rating has been updated", Toast.LENGTH_LONG)
-                } else {
-                    showToast("The rating could not be updated, please check if such a rating exists", Toast.LENGTH_LONG)
+                    if (success) {
+                        showToast("Your rating has been updated", Toast.LENGTH_LONG)
+                    } else {
+                        showToast("The rating could not be updated, please check if such a rating exists", Toast.LENGTH_LONG)
+                    }
                 }
             }
+
         }
 
         val deleteEntryButton = findViewById<Button>(R.id.delete_setting_button)
@@ -115,6 +129,27 @@ class SettingsActivity : AppCompatActivity(){
             }
             updateSpinnerEntries()
             populateEntries()
+        }
+
+        //Make sure the color is valid so the app doesn't crash
+        val colorTextEdit = findViewById<EditText>(R.id.color_input)
+        val maxColorString:Int = 9
+        colorTextEdit.doAfterTextChanged {
+            if (colorTextEdit.text.length > maxColorString){
+                val droppedChars = colorTextEdit.text.length - maxColorString
+                Log.d("COLOR", "$droppedChars chars to be dropped at length ${colorTextEdit.text.length}")
+                colorTextEdit.setText(colorTextEdit.text.dropLast(droppedChars))
+            }
+            if (colorTextEdit.text.length < 1){
+                colorTextEdit.setText("#")
+            }
+            Log.d("COLOR", "This is the color code ${colorTextEdit.text}")
+            try{
+                val colorPickerButton = findViewById<Button>(R.id.color_picker_button)
+                colorPickerButton.setBackgroundColor(Color.parseColor(colorTextEdit.text.toString()))
+            } catch (e: java.lang.IllegalArgumentException){
+                showToast("Please enter a valid color", Toast.LENGTH_SHORT)
+            }
         }
     }
 

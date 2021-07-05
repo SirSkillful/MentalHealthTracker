@@ -277,12 +277,10 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
         db?.execSQL(CREATE_SETTINGS_TABLE)
         populateSettings()
         // Delete all rating entries with wrong rating values
-        val selection = "$RATINGS_RATING_COLUMN LIKE ?"
-        val selectionArgs = arrayOf<String>("1", "2", "3", "4", "5")
-        var deletedRows = 0
-        for (item in selectionArgs){
-            deletedRows += db.delete(RATINGS_TABLE_NAME, selection, arrayOf(item))
-        }
+        val selection = "$RATINGS_RATING_COLUMN NOT IN (\"1\",\"2\",\"3\",\"4\",\"5\")"
+        val selectionArgs = arrayOf<String>()
+        val deletedRows = db.delete(RATINGS_TABLE_NAME, selection, selectionArgs)
+        Log.d("DATABASE", "$deletedRows have been affected")
         //Return if the operation is successful
         return deletedRows > 0
     }
