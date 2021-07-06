@@ -88,7 +88,11 @@
                 android:background="@drawable/white_round_corner_bg"
                 android:entries="@android:array/emailAddressTypes"
                 android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                android:theme="@style/ThemeOverlay.AppCompat.Light"/>
+                android:theme="@style/ThemeOverlay.AppCompat.Light" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="4sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,7 +101,7 @@
 
                 <TextView
                     android:id="@+id/text_label"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Text:"
@@ -106,16 +110,21 @@
 
                 <EditText
                     android:id="@+id/text_input"
-                    android:layout_width="219dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginBottom="3sp"
+                    android:layout_weight="0.2"
                     android:background="@drawable/white_round_corner_bg"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:textSize="16dp"
-                    android:textColor="#3C3C3C"/>
+                    android:textColor="#3C3C3C"
+                    android:textSize="16dp" />
 
             </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="4sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,18 +133,19 @@
 
                 <TextView
                     android:id="@+id/rating_label"
-                    android:layout_width="4dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
                     android:text="Rating:"
                     android:textColor="#3C3C3C"
                     android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/rating_number"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginBottom="3sp"
+                    android:layout_weight="0.5"
                     android:background="@drawable/white_round_corner_bg"
                     android:ems="10"
                     android:inputType="number"
@@ -145,7 +155,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -155,7 +166,7 @@
                     android:layout_weight="1"
                     android:text="Color: "
                     android:textColor="#3C3C3C"
-                    android:textSize="18dp" />
+                    android:textSize="18sp" />
 
                 <EditText
                     android:id="@+id/color_input"
@@ -166,16 +177,19 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:textColor="#3C3C3C"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/color_picker_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center_vertical"
+                    android:layout_height="33sp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="0dp"
                     android:layout_weight="1"
+                    android:padding="0dp"
                     android:text="Pick"
-                    android:textColor="#3C3C3C" />
+                    android:textColor="#3C3C3C"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
