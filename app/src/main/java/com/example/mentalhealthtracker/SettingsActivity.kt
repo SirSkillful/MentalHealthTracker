@@ -43,34 +43,47 @@ class SettingsActivity : AppCompatActivity(){
         val applyButton = findViewById<Button>(R.id.apply_button)
         applyButton.setOnClickListener{
             val text = findViewById<EditText>(R.id.text_input).text.toString()
-            val rating = findViewById<EditText>(R.id.rating_number).text.toString().toInt()
+            val rating = try {
+                findViewById<EditText>(R.id.rating_number).text.toString().toInt()
+            } catch (e: java.lang.NumberFormatException){
+                showToast("Please enter a valid rating", Toast.LENGTH_SHORT)
+                -1
+            }
             val color = findViewById<EditText>(R.id.color_input).text.toString()
             // Try setting the color of the button. If it's not possible the color is invalid and the DB will not be updated
-            val validColor =             try{
-                val colorPickerButton = findViewById<Button>(R.id.color_picker_button)
-                colorPickerButton.setBackgroundColor(Color.parseColor(color))
+            val validColor = try{
+                try {
+                    val colorPickerButton = findViewById<Button>(R.id.color_picker_button)
+                    colorPickerButton.setBackgroundColor(Color.parseColor(color))
+                } catch (e: java.lang.StringIndexOutOfBoundsException){
+                    showToast("Please enter a valid color before updating", Toast.LENGTH_SHORT)
+                    -1
+                } // Color string to short (empty)
             } catch (e: java.lang.IllegalArgumentException){
                 showToast("Please enter a valid color before updating", Toast.LENGTH_SHORT)
                 -1
             }
 
             val createBox = findViewById<CheckBox>(R.id.create_checkbox)
-            if (validColor != -1){
+            if (validColor != -1 && rating != -1){
 
-                val success = dbHelper.updateSetting(text, rating, color)
-                val lastPosition = updateSpinnerEntries()
+                var lastPosition = updateSpinnerEntries()
 
                 // Create a new setting
                 if(createBox.isChecked){
                     val response = dbHelper.addSetting(text, rating, color)
                     if (response){
-                        val lastPosition = updateSpinnerEntries()
-                        spinner.setSelection(lastPosition)
                         showToast("Your rating has been created successfully", Toast.LENGTH_LONG)
+                        lastPosition = updateSpinnerEntries()
+                        Log.d("SPINNER", "Last position was $lastPosition")
+                        if (lastPosition != -1){
+                            spinner.setSelection(lastPosition)
+                        }
                     } else {
-                        showToast("No rating could be created, please check that the rating is a number and not a duplicate", Toast.LENGTH_LONG)
+                        showToast("No rating could be created, please check that the rating is a number and not a duplicate and the text isn't empty", Toast.LENGTH_LONG)
                     }
                 } else {
+                    val success = dbHelper.updateSetting(text, rating, color)
                     // Update an existing rating
                     spinner.setSelection(lastPosition)
                     if (success) {
@@ -90,7 +103,9 @@ class SettingsActivity : AppCompatActivity(){
             if(response){
                 showToast("The rating has been deleted successfully", Toast.LENGTH_LONG)
                 updateSpinnerEntries()
-                populateEntries()
+                if (spinner.adapter.count >= 1) {
+                    populateEntries()
+                }
             } else {
                 showToast("Your rating could not be deleted, please make sure the selection is valid", Toast.LENGTH_LONG)
             }

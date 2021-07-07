@@ -68,7 +68,6 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,
 
     /**
      * Add a rating if it does not exist yet or update one if that's the case
-     * TODO Maybe set a flag in the Rating Activity so this method can be left out by checking the flag if the given value was extracted from the database or is new
      *
      */
     fun saveRating(date: String, rating: Int, note: String): Boolean{
