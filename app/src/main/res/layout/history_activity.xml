@@ -12,7 +12,7 @@
         android:layout_width="78dp"
         android:layout_height="37dp"
         android:backgroundTint="#EA6077"
-        android:text="Back"
+        android:text="❮"
         android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
