@@ -9,7 +9,7 @@ E.g. if you always leave bad ratings on Mondays you can recognize these patterns
 
 # Installation
 
-To install the app on your device you can download the project and load it into Android Studio, were you can build it and deploy it to your device.
+To install the app on your device you can download the project and load it into Android Studio, where you can build it and deploy it to your device.
 An .apk will be available in the future.
 
 # External libraries
