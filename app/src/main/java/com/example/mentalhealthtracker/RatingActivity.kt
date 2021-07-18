@@ -1,12 +1,8 @@
 package com.example.mentalhealthtracker
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
-import java.text.SimpleDateFormat
-import java.util.*
+import androidx.appcompat.app.AppCompatActivity
 
 class RatingActivity : AppCompatActivity() {
 
@@ -24,7 +20,7 @@ class RatingActivity : AppCompatActivity() {
         val confirmButton = findViewById<Button>(R.id.rating_confirm_button) // Button to confirm a rating and return to previous activity
         confirmButton.setOnClickListener {
             // Get the information of a rating for the upload to the database
-            val note = findViewById<EditText>(R.id.text_box).getText().toString()
+            val note = findViewById<EditText>(R.id.text_box).text.toString()
             val date = findViewById<TextView>(R.id.date_text).text
             // Get the rating from the rating option and convert it to an int
             val rating = findViewById<Spinner>(R.id.rating_rating_spinner).selectedItem.toString().split("- ").last().toInt()

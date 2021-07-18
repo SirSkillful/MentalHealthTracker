@@ -3,11 +3,9 @@ package com.example.mentalhealthtracker
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import sun.bob.mcalendarview.MCalendarView
 import sun.bob.mcalendarview.MarkStyle
@@ -17,6 +15,7 @@ import sun.bob.mcalendarview.vo.DateData
 import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Date
 
 
 class HistoryActivity : AppCompatActivity() {
@@ -50,8 +49,8 @@ class HistoryActivity : AppCompatActivity() {
         calendarView.setOnMonthChangeListener(object : OnMonthChangeListener() { // Change the text view showing the month's name and the year at the top of the calendar view
             override fun onMonthChange(year: Int, month: Int) {
                 val dateText = findViewById<TextView>(R.id.calendar_month_text)
-                val monthString = DateFormatSymbols().getMonths()[month-1] // Month -1 because apparently that's just how it works here as well?
-                dateText.setText("$monthString - $year") // Set the text view text to show the month's name and year in the shown format
+                val monthString = DateFormatSymbols().months[month-1] // Month -1 because apparently that's just how it works here as well?
+                dateText.text = "$monthString - $year" // Set the text view text to show the month's name and year in the shown format
             }
         })
     }
@@ -66,7 +65,7 @@ class HistoryActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("MMMM - yyyy") // Month name and year
         val currentDate = sdf.format(Date())
         val dateText = findViewById<TextView>(R.id.calendar_month_text)
-        dateText.setText(currentDate) // Set the date text view to show the month's name and year in the format specified previously
+        dateText.text = currentDate // Set the date text view to show the month's name and year in the format specified previously
     }
 
     /**

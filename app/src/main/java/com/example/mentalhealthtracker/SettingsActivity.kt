@@ -2,16 +2,13 @@ package com.example.mentalhealthtracker
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
-import com.skydoves.colorpickerview.AlphaTileView
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.flag.BubbleFlag
-import com.skydoves.colorpickerview.flag.FlagMode
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 
@@ -136,7 +133,7 @@ class SettingsActivity : AppCompatActivity(){
                 ) { dialogInterface, i -> dialogInterface.dismiss() }
                 .setBottomSpace(12) // Space between the sliders and the control buttons
 
-            builder.colorPickerView.setFlagView(BubbleFlag(this)) // Attach a flag to the color selection
+            builder.colorPickerView.flagView = BubbleFlag(this) // Attach a flag to the color selection
             builder.colorPickerView.setBackgroundColor(Color.parseColor("#83D8CF")) // Set the background color of the dialog to the standard background color of the app
             builder.show()
         }
@@ -179,10 +176,10 @@ class SettingsActivity : AppCompatActivity(){
      */
     private fun setColor(envelope: ColorEnvelope) {
         val colorText = findViewById<EditText>(R.id.color_input)
-        colorText.setText("#${envelope.getHexCode()}")
+        colorText.setText("#${envelope.hexCode}")
         // Update color of the color button
         val colorPickerButton = findViewById<Button>(R.id.color_picker_button)
-        colorPickerButton.setBackgroundColor(Color.parseColor("#${envelope.getHexCode()}"))
+        colorPickerButton.setBackgroundColor(Color.parseColor("#${envelope.hexCode}"))
     }
 
     /**
